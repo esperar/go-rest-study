@@ -2,7 +2,9 @@ package main
 
 import (
 	"github.com/gorilla/mux"
+	"gorest/controller"
 	"gorest/database"
+	"gorest/entity"
 	"log"
 	"net/http"
 
@@ -16,6 +18,14 @@ func main() {
 	router := mux.NewRouter().StrictSlash(true)
 	log.Fatal(http.ListenAndServe(":8090", router))
 
+}
+
+func initalizeHandlers(router *mux.Router) {
+	router.HandleFunc("/create", controller.CreatePerson).Methods("POST")
+	router.HandleFunc("/get", controller.GetAllPerson).Methods("GET")
+	router.HandleFunc("/get/{id}", controller.GetPersonByID).Methods("GET")
+	router.HandleFunc("/update/{id}", controller.UpdatePersonByID).Methods("PUT")
+	router.HandleFunc("/delete/{id}", controller.DeletePersonByID).Methods("DELETE")
 }
 
 func initDB() {
@@ -32,4 +42,5 @@ func initDB() {
 	if err != nil {
 		panic(err.Error())
 	}
+	database.Migrate(^entity.Person{})
 }
