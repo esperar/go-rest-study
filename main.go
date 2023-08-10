@@ -1,8 +1,18 @@
 package main
 
-import "gorest/database"
+import (
+	"gorest/database"
+	"log"
+
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+)
 
 func main() {
+	initDB()
+	log.Println("Starting the HTTP server on port 8090")
+}
+
+func initDB() {
 	config := database.Config{
 		ServerName: "localhost:3306",
 		User:       "root",
