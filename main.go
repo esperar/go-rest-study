@@ -1,8 +1,10 @@
 package main
 
 import (
+	"github.com/gorilla/mux"
 	"gorest/database"
 	"log"
+	"net/http"
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
@@ -10,6 +12,10 @@ import (
 func main() {
 	initDB()
 	log.Println("Starting the HTTP server on port 8090")
+
+	router := mux.NewRouter().StrictSlash(true)
+	log.Fatal(http.ListenAndServe(":8090", router))
+
 }
 
 func initDB() {
